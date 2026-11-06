@@ -1,0 +1,10 @@
+﻿chay.md
+giaithich.md
+
+.venv/
+**/.venv/
+**/node_modules/
+**/dist/
+backend/.env
+__pycache__/
+*.py[cod]
