@@ -1,0 +1,154 @@
+{
+  "feature_order": [
+    "_AGE80",
+    "_SEX",
+    "DIABETE4",
+    "_BMI5",
+    "_SMOKER3",
+    "CHCKDNY2",
+    "MAXDRNKS",
+    "CVDSTRK3"
+  ],
+  "selection_method": "Mandatory core fields plus best eligible optional subset by weighted validation ROC-AUC",
+  "imbalance_method": "random undersampling of class 0 to match class 1 on training rows only",
+  "training_class_counts": [
+    112732,
+    112732
+  ],
+  "threshold_objective": "fixed 0.50 cutoff on raw model score; display score bands at 0.50, 0.60, 0.70, and 0.80",
+  "probability_method": "weighted_isotonic",
+  "feature_schema": [
+    {
+      "name": "_AGE80",
+      "label": "Tuổi",
+      "kind": "numeric",
+      "required": false,
+      "description": "Biến đầu vào theo mã BRFSS; kết quả chỉ tham khảo.",
+      "min": 18.0,
+      "max": 80.0,
+      "step": 1
+    },
+    {
+      "name": "_SEX",
+      "label": "Giới tính",
+      "kind": "categorical",
+      "required": false,
+      "description": "Biến đầu vào theo mã BRFSS; kết quả chỉ tham khảo.",
+      "options": [
+        {
+          "value": 1.0,
+          "label": "Mã BRFSS 1"
+        },
+        {
+          "value": 2.0,
+          "label": "Mã BRFSS 2"
+        }
+      ]
+    },
+    {
+      "name": "DIABETE4",
+      "label": "Tình trạng tiểu đường",
+      "kind": "categorical",
+      "required": false,
+      "description": "Biến đầu vào theo mã BRFSS; kết quả chỉ tham khảo.",
+      "options": [
+        {
+          "value": 1.0,
+          "label": "Mã BRFSS 1"
+        },
+        {
+          "value": 2.0,
+          "label": "Mã BRFSS 2"
+        },
+        {
+          "value": 3.0,
+          "label": "Mã BRFSS 3"
+        },
+        {
+          "value": 4.0,
+          "label": "Mã BRFSS 4"
+        }
+      ]
+    },
+    {
+      "name": "_BMI5",
+      "label": "Chỉ số BMI",
+      "kind": "numeric",
+      "required": false,
+      "description": "Biến đầu vào theo mã BRFSS; kết quả chỉ tham khảo.",
+      "min": 12.0,
+      "max": 99.84,
+      "step": 0.1
+    },
+    {
+      "name": "_SMOKER3",
+      "label": "Tình trạng hút thuốc",
+      "kind": "categorical",
+      "required": false,
+      "description": "Biến đầu vào theo mã BRFSS; kết quả chỉ tham khảo.",
+      "options": [
+        {
+          "value": 1.0,
+          "label": "Mã BRFSS 1"
+        },
+        {
+          "value": 2.0,
+          "label": "Mã BRFSS 2"
+        },
+        {
+          "value": 3.0,
+          "label": "Mã BRFSS 3"
+        },
+        {
+          "value": 4.0,
+          "label": "Mã BRFSS 4"
+        }
+      ]
+    },
+    {
+      "name": "CHCKDNY2",
+      "label": "Tiền sử bệnh thận",
+      "kind": "categorical",
+      "required": false,
+      "description": "Biến đầu vào theo mã BRFSS; kết quả chỉ tham khảo.",
+      "options": [
+        {
+          "value": 1.0,
+          "label": "Mã BRFSS 1"
+        },
+        {
+          "value": 2.0,
+          "label": "Mã BRFSS 2"
+        }
+      ]
+    },
+    {
+      "name": "MAXDRNKS",
+      "label": "Số đồ uống nhiều nhất trong một lần uống",
+      "kind": "numeric",
+      "required": false,
+      "description": "Biến đầu vào theo mã BRFSS; kết quả chỉ tham khảo.",
+      "min": 0.0,
+      "max": 88.0,
+      "step": 1
+    },
+    {
+      "name": "CVDSTRK3",
+      "label": "Tiền sử đột quỵ",
+      "kind": "categorical",
+      "required": false,
+      "description": "Biến đầu vào theo mã BRFSS; kết quả chỉ tham khảo.",
+      "options": [
+        {
+          "value": 0.0,
+          "label": "Mã BRFSS 0"
+        },
+        {
+          "value": 1.0,
+          "label": "Mã BRFSS 1"
+        }
+      ]
+    }
+  ],
+  "decision_score": "raw_model_score"
+}

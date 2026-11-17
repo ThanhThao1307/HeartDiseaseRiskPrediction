@@ -26,9 +26,46 @@ function Login() {
   }
 
   useEffect(() => {
-    if (user) navigate('/', { replace: true })
-  }, [user, navigate])
-  return <section className="auth-screen"><div className="auth-card"><Link className="auth-brand" to="/"><span className="brand-mark">♥</span><span>Heart<strong>Care</strong><small>HỆ THỐNG SỨC KHỎE TIM MẠCH</small></span></Link><p className="auth-platform">NỀN TẢNG THEO DÕI SỨC KHỎE TIM MẠCH</p><nav className="auth-tabs" aria-label="Tài khoản"><Link className="active" to="/login">Đăng nhập</Link><Link to="/register">Đăng ký</Link></nav><form className="auth-form" onSubmit={handleSubmit}><p className="eyebrow">CHÀO MỪNG TRỞ LẠI</p><h1>Đăng nhập</h1><p className="form-lead">Nhập thông tin tài khoản để tiếp tục.</p>{error && <div className="notice notice-error">{error}</div>}<label className="field"><span>Địa chỉ Email</span><input type="email" autoComplete="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} required /></label><label className="field"><span>Mật khẩu</span><input type="password" autoComplete="current-password" value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} required /></label><button className="button button-dark button-wide" disabled={submitting}>{submitting ? 'Đang đăng nhập...' : '↪ Đăng nhập vào HeartCare'}</button><p className="auth-switch">Chưa có tài khoản? <Link to="/register">Đăng ký ngay</Link></p><div className="auth-security"><span aria-hidden="true">✓</span> Dữ liệu tài khoản được bảo vệ bằng JWT.</div><Link className="auth-home-link" to="/">← Quay lại trang chủ</Link></form></div></section>
+    if (user) navigate(location.state?.from ?? '/', { replace: true })
+  }, [user, location.state, navigate])
+
+  return (
+    <section className="auth-screen">
+      <div className="auth-card">
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <h1>Đăng nhập</h1>
+          <p className="form-lead">Đăng nhập để dự đoán và lưu kết quả.</p>
+          {error && <div className="notice notice-error">{error}</div>}
+          <label className="field">
+            <span>Địa chỉ email</span>
+            <input
+              type="email"
+              autoComplete="email"
+              value={form.email}
+              onChange={(event) => setForm({ ...form, email: event.target.value })}
+              required
+            />
+          </label>
+          <label className="field">
+            <span>Mật khẩu</span>
+            <input
+              type="password"
+              autoComplete="current-password"
+              value={form.password}
+              onChange={(event) => setForm({ ...form, password: event.target.value })}
+              required
+            />
+          </label>
+          <button className="button button-dark button-wide" disabled={submitting}>
+            {submitting ? 'Đang đăng nhập...' : 'Đăng nhập'}
+          </button>
+          <p className="auth-switch">
+            Chưa có tài khoản? <Link to="/register">Đăng ký</Link>
+          </p>
+        </form>
+      </div>
+    </section>
+  )
 }
 
 export default Login

@@ -6,23 +6,27 @@ import { requireAuth } from '../middleware/auth.js'
 
 const router = Router()
 const AI_SERVICE_URL = process.env.AI_SERVICE_URL ?? 'http://127.0.0.1:8000'
-const FEATURE_KEYS = [
-  '_AGE80', '_SEX', '_BMI5', 'BPHIGH6', 'TOLDHI3', 'DIABETE4',
-  '_SMOKER3', 'EXERANY2', 'GENHLTH', 'PHYSHLTH', 'DIFFWALK', 'CVDSTRK3',
-]
 router.use(requireAuth)
+
+router.get('/schema', async (_req, res) => {
+  try {
+    const response = await axios.get(`${AI_SERVICE_URL}/schema`, { timeout: 15000 })
+    return res.json(response.data)
+  } catch {
+    return res.status(503).json({ message: 'Không thể tải schema đầu vào từ dịch vụ AI.' })
+  }
+})
 
 router.post('/', async (req, res) => {
   const { features, model = 'all' } = req.body
   if (!features || typeof features !== 'object' || Array.isArray(features)) {
-    return res.status(400).json({ message: 'Thiếu dữ liệu 12 feature.' })
-  }
-  const keys = Object.keys(features).sort()
-  if (keys.length !== FEATURE_KEYS.length || !FEATURE_KEYS.every((key) => keys.includes(key))) {
-    return res.status(400).json({ message: 'Request phải chứa đúng 12 feature theo schema.' })
+    return res.status(400).json({ message: 'Thiếu dữ liệu feature hợp lệ.' })
   }
   if (!['all', 'random_forest', 'xgboost', 'ann'].includes(model)) {
     return res.status(400).json({ message: 'Model không hợp lệ.' })
+  }
+  if (Object.values(features).some((value) => value === null || value === undefined || value === '')) {
+    return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ các thông tin sức khỏe.' })
   }
 
   try {

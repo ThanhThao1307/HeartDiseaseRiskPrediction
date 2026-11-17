@@ -1,82 +1,73 @@
-# Heart Disease Risk Prediction
+# Heart Disease Project
 
-Ứng dụng web hỗ trợ **tham khảo nguy cơ bệnh tim mạch** từ 12 thông tin sức khỏe. Người dùng có thể chạy một mô hình hoặc so sánh đồng thời ba mô hình học máy, xem lại kết quả và theo dõi lịch sử đánh giá của mình.
+## Giới thiệu
 
-> **Lưu ý:** Đây là công cụ sàng lọc/tham khảo, không phải công cụ chẩn đoán và không thay thế tư vấn của chuyên gia y tế.
+Ứng dụng web cho phép người dùng nhập các thông tin sức khỏe, chạy mô hình Random Forest, XGBoost hoặc ANN, xem kết quả và lưu lịch sử dự đoán theo tài khoản. Biểu mẫu yêu cầu nhập đầy đủ tám trường đầu vào trước khi chạy dự đoán. Model hiện dùng bộ biến được chọn từ BRFSS; nhãn `_MICHD` phản ánh tình trạng bệnh tim tự báo cáo trong khảo sát. Kết quả chỉ phục vụ tham khảo, không thay thế chẩn đoán y khoa.
 
-## Công nghệ sử dụng
+## Công nghệ
 
-- **Frontend:** React 19, React Router, Vite, Tailwind CSS.
-- **Backend:** Node.js, Express 5, MongoDB và Mongoose.
-- **Dịch vụ AI:** Python, FastAPI, scikit-learn, XGBoost, Keras và TensorFlow.
-- **Mô hình:** Random Forest, XGBoost và mạng nơ-ron nhân tạo (ANN).
+- **Frontend:** React, Vite, Axios
+- **Backend API và tài khoản:** Node.js, Express, MongoDB, Mongoose, JWT
+- **Dịch vụ mô hình:** Python, FastAPI, scikit-learn, XGBoost, TensorFlow/Keras
 
-## Chức năng chính
+## Cấu trúc thư mục
 
-- Đăng ký, đăng nhập và quản lý thông tin tài khoản.
-- Nhập 12 chỉ số sức khỏe và chọn một mô hình hoặc cả ba mô hình để dự đoán.
-- Xem xác suất, ngưỡng phân loại và kết quả của từng mô hình.
-- Xem chi tiết và lịch sử đánh giá.
-- Lọc, tìm kiếm, theo dõi biểu đồ lịch sử và xuất dữ liệu lịch sử ra CSV.
-
-## Yêu cầu môi trường
-
-- Node.js **20.19+** hoặc **22.12+**, kèm npm.
-- Python **3.10–3.12**.
-- MongoDB đang chạy cục bộ hoặc một MongoDB Atlas URI.
-
-## Cài đặt
-
-Mở PowerShell tại thư mục gốc của project. Các lệnh cài đặt và khởi chạy bên dưới giả định thư mục hiện tại là thư mục này.
-
-### 1. Cấu hình backend và cài dịch vụ AI
-
-Cài các package của backend:
-
-```powershell
-cd backend
-npm install
-py -3.12 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -r src\ai\requirements.txt
+```text
+HeartDisease_Project/
+├── backend/
+│   └── src/
+│       ├── ai/
+│       │   ├── assets/       # Model, preprocessor và metadata đầu vào
+│       │   ├── main.py       # API suy luận
+│       │   └── requirements.txt
+│       ├── models/           # Schema MongoDB
+│       ├── routes/           # API đăng nhập, người dùng, dự đoán
+│       └── server.js         # Express server
+├── frontend/
+│   └── src/                  # Giao diện React
+└── README.md
 ```
 
-Nếu chưa cài Python 3.12, thay `-3.12` bằng phiên bản Python từ 3.10 đến 3.12 đã cài trên máy.
+## Cài đặt và chạy
 
-### 3. Cài frontend
+Cần có Node.js, Python, MongoDB và bộ model trong `backend/src/ai/assets/`.
 
-Mở một PowerShell khác tại thư mục gốc của project:
+1. **Khởi động MongoDB** trên máy hoặc dùng MongoDB Atlas.
 
-```powershell
-cd frontend
-npm install
-```
+2. **Chạy dịch vụ AI** trong cửa sổ terminal thứ nhất:
 
-## Chạy project
+   ```powershell
+   cd backend
+   python -m venv .venv
+   .venv\Scripts\activate
+   pip install -r src/ai/requirements.txt
+   python -m uvicorn main:app --app-dir src/ai --host 127.0.0.1 --port 8000
+   ```
 
-Đảm bảo MongoDB đã hoạt động và cấu hình hợp lệ. Khởi chạy ba dịch vụ trong **ba cửa sổ PowerShell riêng**, theo thứ tự:
+3. **Cấu hình và chạy backend** trong cửa sổ terminal thứ hai. Tạo `backend/.env`:
 
-Mở từng cửa sổ PowerShell tại thư mục gốc của project.
+   ```env
+   MONGODB_URI=mongodb://127.0.0.1:27017/heart_disease
+   JWT_SECRET=replace_with_a_long_random_secret
+   PORT=5000
+   FRONTEND_ORIGIN=http://localhost:5173
+   AI_SERVICE_URL=http://127.0.0.1:8000
+   ```
 
-**Cửa sổ 1 — Dịch vụ AI:**
+   Sau đó chạy:
 
-```powershell
-cd backend
-.\.venv\Scripts\Activate.ps1
-python -m uvicorn main:app --app-dir src\ai --host 127.0.0.1 --port 8000 --reload
-```
+   ```powershell
+   cd backend
+   npm install
+   npm run dev
+   ```
 
-**Cửa sổ 2 — Backend:**
+4. **Chạy frontend** trong cửa sổ terminal thứ ba:
 
-```powershell
-cd backend
-npm run dev
-```
+   ```powershell
+   cd frontend
+   npm install
+   npm run dev
+   ```
 
-**Cửa sổ 3 — Frontend:**
-
-```powershell
-cd frontend
-npm run dev
-```
+   Mở địa chỉ Vite hiển thị trong terminal, thường là `http://localhost:5173`.

@@ -14,16 +14,30 @@ function Navbar() {
     <header className="topbar">
       <Link className="brand" to="/" aria-label="HeartCare - Trang chủ">
         <span className="brand-mark" aria-hidden="true">♥</span>
-        <span>Heart<strong>Care</strong><small> SỨC KHỎE TIM MẠCH</small></span>
+        <span>Heart<strong>Care</strong><small>DỰ ĐOÁN NGUY CƠ</small></span>
       </Link>
       <nav className="main-nav" aria-label="Điều hướng chính">
-        <NavLink to="/" end>Trang chủ</NavLink>
+        <NavLink to="/">Trang chủ</NavLink>
         {user && <NavLink to="/predict">Dự đoán</NavLink>}
         {user && <NavLink to="/history">Lịch sử</NavLink>}
-        {user && <NavLink to="/profile">Thông tin cá nhân</NavLink>}
       </nav>
       <div className="account-nav">
-        {user ? <><Link className="account-profile" to="/profile" aria-label={`Hồ sơ ${user.name}`}><span className="account-avatar">{user.name?.[0]?.toUpperCase()}</span><span className="account-name">{user.name}</span></Link><button className="button button-quiet button-small logout-button" onClick={handleLogout}><span aria-hidden="true">↪</span> Đăng xuất</button></> : <><Link className="button button-quiet button-small" to="/login">Đăng nhập</Link><Link className="button button-dark button-small" to="/register">Tạo tài khoản</Link></>}
+        {user ? (
+          <>
+            <Link className="account-profile" to="/profile" aria-label={`Hồ sơ ${user.name}`}>
+              <span className="account-avatar">{user.name?.[0]?.toUpperCase()}</span>
+              <span className="account-name">{user.name}</span>
+            </Link>
+            <button className="button button-quiet button-small logout-button" onClick={handleLogout}>
+              Đăng xuất
+            </button>
+          </>
+        ) : (
+          <>
+            <Link className="button button-quiet button-small" to="/login">Đăng nhập</Link>
+            <Link className="button button-dark button-small" to="/register">Đăng ký</Link>
+          </>
+        )}
       </div>
     </header>
   )

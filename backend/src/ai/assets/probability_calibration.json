@@ -1,0 +1,6 @@
+{
+  "method": "weighted isotonic regression on untouched natural-prevalence calibration split",
+  "weighted_positive_prevalence": 0.06491759821830263,
+  "threshold_cutoff": 0.5,
+  "threshold_score": "raw_model_score"
+}
